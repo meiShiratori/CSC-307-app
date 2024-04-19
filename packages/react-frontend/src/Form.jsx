@@ -17,7 +17,7 @@ function Form(props) {
 
   function submitForm() {
     props.handleSubmit(person);
-    setPerson({ name: "", job: "" }); // Reset form after submission
+    setPerson({ name: "", job: "" }); 
   }
 
   return (

@@ -21,12 +21,23 @@ function updateList(person) {
       })
 }
   
-    function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
-    });
-    setCharacters(updated);
-  }
+const removeOneCharacter = (id) => {
+  const promise = fetch(`http://localhost:8000/users/${id}`, {
+      method: 'DELETE',
+  })
+  .then(response => {
+      if (response.status === 200) {
+          setCharacters(prevCharacters => prevCharacters.filter(character => character.id !== id));
+      } else if (response.status === 404) {
+          throw new Error('User not found');
+      }
+  })
+  .catch(error => {
+      console.error('Delete failed:', error);
+  });
+  return promise;
+};
+
 
   
 function fetchUsers() {
@@ -41,6 +52,17 @@ function fetchUsers() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(person),
+    })
+    .then(response => {
+        if(response.status === 201){
+                return response.json();
+        }
+        else{
+        throw new Error('New user not created' + response.status);
+        }
+    })
+    .then(data => {
+        return data;
     });
     return promise;
   }
