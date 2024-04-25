@@ -1,5 +1,5 @@
 // src/MyApp.jsx
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import Table from "./Table";
 import Form from "./Form";
 
@@ -22,49 +22,45 @@ function updateList(person) {
 }
   
 const removeOneCharacter = (id) => {
-  const promise = fetch(`http://localhost:8000/users/${id}`, {
+    return fetch(`http://localhost:8000/users/${id}`, {
       method: 'DELETE',
   })
-  .then(response => {
-      if (response.status === 200) {
-          setCharacters(prevCharacters => prevCharacters.filter(character => character.id !== id));
-      } else if (response.status === 404) {
-          throw new Error('User not found');
-      }
-  })
-  .catch(error => {
-      console.error('Delete failed:', error);
-  });
-  return promise;
+      .then(response => {
+          if (response.status === 200) {
+              setCharacters(prevCharacters => prevCharacters.filter(character => character.id !== id));
+          } else if (response.status === 404) {
+              throw new Error('User not found');
+          }
+      })
+      .catch(error => {
+          console.error('Delete failed:', error);
+      });
 };
 
 
   
 function fetchUsers() {
-    const promise = fetch("http://localhost:8000/users");
-    return promise;
+    return fetch("http://localhost:8000/users");
 }
 
   function postUser(person) {
-    const promise = fetch("Http://localhost:8000/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(person),
+      return fetch("Http://localhost:8000/users", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(person),
     })
-    .then(response => {
-        if(response.status === 201){
+        .then(response => {
+            if (response.status === 201) {
                 return response.json();
-        }
-        else{
-        throw new Error('New user not created' + response.status);
-        }
-    })
-    .then(data => {
-        return data;
-    });
-    return promise;
+            } else {
+                throw new Error('New user not created' + response.status);
+            }
+        })
+        .then(data => {
+            return data;
+        });
   }
   
 
